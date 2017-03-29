@@ -59,4 +59,3 @@ gradle/
 #gradlew.bat
 settings.gradle
 !/app/build.gradle
-/app/build.gradle
