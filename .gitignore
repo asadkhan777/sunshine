@@ -6,7 +6,7 @@
 *.dex
 
 # Java class files
-*.class
+
 
 # Generated files
 bin/
@@ -51,10 +51,12 @@ captures/
 
 
 app/libs/
-app/proguard-rules.pro
+
 build.gradle
 gradle.properties
 gradle/
-gradlew
-gradlew.bat
+#gradlew
+#gradlew.bat
 settings.gradle
+!/app/build.gradle
+/app/build.gradle
