@@ -218,11 +218,11 @@ public class MainForecastActivity extends AppCompatActivity implements MainForec
             Bundle args = new Bundle();
             args.putParcelable(ForecastDetailFragment.DETAIL_URI, contentUri);
 
-            ForecastDetailFragment fordetfrag = new ForecastDetailFragment();
-            fordetfrag.setArguments(args);
+            ForecastDetailFragment forcastdetalfragmint = new ForecastDetailFragment();
+            forcastdetalfragmint.setArguments(args);
 
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.weather_detail_container, fordetfrag, DETAILFRAGMENT_TAG)
+                    .replace(R.id.weather_detail_container, forcastdetalfragmint, DETAILFRAGMENT_TAG)
                     .commit();
 
         } else {
