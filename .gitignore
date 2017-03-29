@@ -52,7 +52,7 @@ captures/
 
 app/libs/
 app/proguard-rules.pro
-
+build.gradle
 gradle.properties
 gradle/
 gradlew
