@@ -1,6 +1,6 @@
 # Built application files
 *.apk
-*.ap_
+
 
 # Files for the ART/Dalvik VM
 *.dex
@@ -10,7 +10,7 @@
 
 # Generated files
 bin/
-gen/
+
 out/
 
 # Gradle files
@@ -38,3 +38,23 @@ captures/
 
 # Keystore files
 *.jks
+.idea/copyright/
+.idea/libraries/
+
+.idea/checkstyle-idea.xml
+.idea/compiler.xml
+.idea/gradle.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/runConfigurations.xml
+.idea/vcs.xml
+
+
+app/libs/
+app/proguard-rules.pro
+
+gradle.properties
+gradle/
+gradlew
+gradlew.bat
+settings.gradle
