@@ -30,6 +30,8 @@ public class MainForecastFragment extends Fragment
 
     private ForecastAdapter mForecastAdapter;
 
+    private boolean mTwoPaneMode;
+
     private ListView mListView;
 
     private int mPosition = ListView.INVALID_POSITION;
@@ -152,6 +154,13 @@ public class MainForecastFragment extends Fragment
         }
 
         return rootView;
+    }
+
+    public void setAdapterTwoPaneSetting(boolean TwoPane){
+        mTwoPaneMode = TwoPane;
+        if ( mForecastAdapter != null ) {
+            mForecastAdapter.setUseTodayLayout(TwoPane);
+        }
     }
 
     void onLocationChanged(){
