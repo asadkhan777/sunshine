@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,8 +39,8 @@ public class MainForecastActivity extends AppCompatActivity implements MainForec
 
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
+        // setSupportActionBar(toolbar);
 
         if(findViewById(R.id.weather_detail_container) != null) {
             // The detail container view will be present only in the large-screen layouts
@@ -61,6 +61,10 @@ public class MainForecastActivity extends AppCompatActivity implements MainForec
             //    Saved data is present, and will be displayed in the dynamic fragment
         } else {
             mTwoPane = false;
+            ActionBar actionBar = getSupportActionBar();
+            if ( actionBar != null){
+                actionBar.setElevation(0f);
+            }
         }
 
         MainForecastFragment mainForecastFragment =
