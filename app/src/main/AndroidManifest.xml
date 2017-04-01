@@ -41,7 +41,7 @@
         </activity>
 
         <provider
-            android:authorities="com.example.asadkhan.newapplication001"
+            android:authorities="com.example.asadkhan.sunshine"
             android:name="com.example.asadkhan.sunshine.data.WeatherProvider"
             android:enabled="true"
             android:exported="true"/>

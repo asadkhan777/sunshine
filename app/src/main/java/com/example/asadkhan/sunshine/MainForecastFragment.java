@@ -30,6 +30,8 @@ public class MainForecastFragment extends Fragment
 
     private ForecastAdapter mForecastAdapter;
 
+    private boolean mTwoPaneMode;
+
     private ListView mListView;
 
     private int mPosition = ListView.INVALID_POSITION;
@@ -76,7 +78,7 @@ public class MainForecastFragment extends Fragment
         super.onCreate(savedInstanceState);
         // Add this line in order for this fragment to handle menu events.
         setHasOptionsMenu(true);
-        updateWeather();
+//        updateWeather();
     }
 
     @Override
@@ -152,6 +154,13 @@ public class MainForecastFragment extends Fragment
         }
 
         return rootView;
+    }
+
+    public void setAdapterTwoPaneSetting(boolean TwoPane){
+        mTwoPaneMode = TwoPane;
+        if ( mForecastAdapter != null ) {
+            mForecastAdapter.setUseTodayLayout(TwoPane);
+        }
     }
 
     void onLocationChanged(){
