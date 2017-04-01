@@ -63,6 +63,14 @@ public class MainForecastActivity extends AppCompatActivity implements MainForec
             mTwoPane = false;
         }
 
+        MainForecastFragment mainForecastFragment =
+                (MainForecastFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.fragment_forecast);
+
+        if (null != mainForecastFragment){
+                mainForecastFragment.setAdapterTwoPaneSetting(mTwoPane);
+        }
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
