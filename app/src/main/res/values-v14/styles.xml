@@ -10,4 +10,5 @@
         <item name="android:background">@color/sunshine_blue</item>
         <item name="android:height">56dp</item>
     </style>
+
 </resources>

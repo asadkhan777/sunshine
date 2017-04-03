@@ -5,6 +5,5 @@
     android:name="com.example.asadkhan.sunshine.MainForecastFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context=".MainForecastFragment"
     tools:layout="@android:layout/list_content" />
