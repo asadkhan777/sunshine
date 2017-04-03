@@ -3,6 +3,7 @@
     <string name="hello_world">Hello world!</string>
 
     <string name="app_name">Sunshine App</string>
+    <string name="detail_icon">Weather Icon image</string>
 
     <string name="action_refresh">Refresh</string>
     <string name="action_settings">Settings</string>
