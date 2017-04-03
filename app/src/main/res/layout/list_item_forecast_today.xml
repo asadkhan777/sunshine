@@ -8,7 +8,7 @@
     android:baselineAligned="false"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
-    android:background="@color/sunshine_blue"
+    android:background="@drawable/today_touch_selector"
     android:padding="16dp">
 
     <LinearLayout
@@ -55,16 +55,18 @@
             android:id="@+id/list_item_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:contentDescription="@string/app_name"
             android:src="@mipmap/ic_launcher"/>
 
         <TextView
             android:id="@+id/list_item_forecast_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:textAppearanceLarge"
             android:textColor="@android:color/white"
             android:fontFamily="sans-serif-condensed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 

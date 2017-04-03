@@ -33,7 +33,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
-            android:textAppearance="?android:textAppearanceLarge"
+            android:textSize="20sp"
+            android:textColor="@color/black"
             android:gravity="center"/>
 
         <TextView
@@ -42,6 +43,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
             android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="@color/black"
             android:gravity="center"/>
 
     </LinearLayout>
@@ -59,6 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/dark_grey_text"
             android:textAppearance="?android:textAppearanceLarge"
             android:gravity="center"/>
 
@@ -67,6 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/dark_grey_text"
             android:textAppearance="?android:textAppearanceSmall"
             android:gravity="center"/>
 
