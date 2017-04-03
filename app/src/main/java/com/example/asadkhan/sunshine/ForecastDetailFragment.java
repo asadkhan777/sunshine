@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.asadkhan.sunshine.customViews.*;
 import com.example.asadkhan.sunshine.data.WeatherContract;
 import com.example.asadkhan.sunshine.data.WeatherContract.WeatherEntry;
 
@@ -84,6 +85,7 @@ public class ForecastDetailFragment extends Fragment
     private TextView mHumidityView;
     private TextView mWindView;
     private TextView mPressureView;
+    private MyView myView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,7 +104,7 @@ public class ForecastDetailFragment extends Fragment
         }
         // Add some code
 
-        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+        View rootView = inflater.inflate(R.layout.detail_fragment, container, false);
         mIconView = (ImageView) rootView.findViewById(R.id.detail_icon);
         mDateView = (TextView) rootView.findViewById(R.id.detail_date_textview);
         mFriendlyDateView = (TextView) rootView.findViewById(R.id.detail_day_textview);
@@ -112,6 +114,7 @@ public class ForecastDetailFragment extends Fragment
         mHumidityView = (TextView) rootView.findViewById(R.id.detail_humidity_textview);
         mWindView = (TextView) rootView.findViewById(R.id.detail_wind_textview);
         mPressureView = (TextView) rootView.findViewById(R.id.detail_pressure_textview);
+        myView = (MyView) rootView.findViewById(R.id.canvas_view);
 
         return rootView;
     }
@@ -229,6 +232,7 @@ public class ForecastDetailFragment extends Fragment
             float pressure = data.getFloat(COL_WEATHER_PRESSURE);
             mPressureView.setText(getActivity().getString(R.string.format_pressure, pressure));
 
+            // myView.setX(100);
             // We still need this for the share intent
             mForecastStr = String.format("%s - %s - %s/%s", dateText, description, high, low);
 
