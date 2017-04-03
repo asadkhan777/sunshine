@@ -4,6 +4,7 @@
     <!-- Base application theme. -->
     <style name="ForecastListStyle">
         <item name="android:choiceMode">singleChoice</item>
+        <item name="android:divider">@null</item>
     </style>
 
 </resources>
