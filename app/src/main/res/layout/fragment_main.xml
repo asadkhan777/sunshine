@@ -7,7 +7,6 @@
     <ListView
         android:id="@+id/listview_forecast"
         style="@style/ForecastListStyle"
-        android:divider="@null"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
