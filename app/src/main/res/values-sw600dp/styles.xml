@@ -2,7 +2,6 @@
 <resources>
 
     <!-- Base application theme. -->
-
     <style name="ForecastListStyle">
         <item name="android:choiceMode">singleChoice</item>
     </style>
