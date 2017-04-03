@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -16,7 +15,9 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-public class MainForecastActivity extends AppCompatActivity implements MainForecastFragment.Callback {
+public class MainForecastActivity
+        extends AppCompatActivity
+        implements MainForecastFragment.Callback {
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -28,7 +29,7 @@ public class MainForecastActivity extends AppCompatActivity implements MainForec
 
     private String mLocation;
 
-//    private final String FORECASTFRAGMENT_TAG = "FFTAG";
+    //  private final String FORECASTFRAGMENT_TAG = "FFTAG";
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
     private boolean mTwoPane;
 
@@ -57,14 +58,14 @@ public class MainForecastActivity extends AppCompatActivity implements MainForec
                                 DETAILFRAGMENT_TAG)
                         .commit();
             }
-            // else
-            //    Saved data is present, and will be displayed in the dynamic fragment
+
+            // // Set custom actionbar elevation
+            //ActionBar actionBar = getSupportActionBar();
+            // if ( actionBar != null){
+            //    actionBar.setElevation(0f);
+            //}
         } else {
             mTwoPane = false;
-            ActionBar actionBar = getSupportActionBar();
-            if ( actionBar != null){
-                actionBar.setElevation(0f);
-            }
         }
 
         MainForecastFragment mainForecastFragment =
