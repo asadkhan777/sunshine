@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.asadkhan.sunshine.customViews.*;
 import com.example.asadkhan.sunshine.data.WeatherContract;
 import com.example.asadkhan.sunshine.data.WeatherContract.WeatherEntry;
 
@@ -85,7 +84,7 @@ public class ForecastDetailFragment extends Fragment
     private TextView mHumidityView;
     private TextView mWindView;
     private TextView mPressureView;
-    private MyView myView;
+    // private MyView myView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -114,7 +113,7 @@ public class ForecastDetailFragment extends Fragment
         mHumidityView = (TextView) rootView.findViewById(R.id.detail_humidity_textview);
         mWindView = (TextView) rootView.findViewById(R.id.detail_wind_textview);
         mPressureView = (TextView) rootView.findViewById(R.id.detail_pressure_textview);
-        myView = (MyView) rootView.findViewById(R.id.canvas_view);
+        // myView = (MyView) rootView.findViewById(R.id.canvas_view);
 
         return rootView;
     }
@@ -152,8 +151,7 @@ public class ForecastDetailFragment extends Fragment
         Uri uri = mUri;
         if (null != uri) {
             long date = WeatherContract.WeatherEntry.getDateFromUri(uri);
-            Uri updatedUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(newLocation, date);
-            mUri = updatedUri;
+            mUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(newLocation, date);
             getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
         }
     }
