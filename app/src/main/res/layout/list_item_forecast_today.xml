@@ -5,30 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
+    android:baselineAligned="false"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
-    android:background="@drawable/touch_selector"
+    android:background="@color/sunshine_blue"
     android:padding="16dp">
 
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:layout_marginStart="44dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/list_item_date_textview"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/list_item_high_textview"
+            android:textSize="@dimen/today_item_really_big"
+            android:fontFamily="sans-serif"
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
+            android:layout_marginStart="@dimen/fab_margin"
             android:id="@+id/list_item_low_textview"
+            android:textSize="@dimen/today_item_big"
+            android:fontFamily="sans-serif"
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -44,12 +55,14 @@
             android:id="@+id/list_item_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:contentDescription="Placeholder Icon image"
+            android:contentDescription="@string/app_name"
             android:src="@mipmap/ic_launcher"/>
 
         <TextView
             android:id="@+id/list_item_forecast_textview"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@android:color/white"
+            android:fontFamily="sans-serif-condensed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
