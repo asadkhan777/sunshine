@@ -3,14 +3,21 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="activity_horizontal_margin_small">4dp</dimen>
+    <dimen name="horizontal_margin_medium">8dp</dimen>
+    <dimen name="horizontal_margin_small">4dp</dimen>
     <dimen name="margin_very_small">2dp</dimen>
+
     <dimen name="fab_margin">12dp</dimen>
     <dimen name="fab_margin_big">18dp</dimen>
 
     <!-- Font Sizes [Custom] -->
-    <dimen name="big_text">18sp</dimen>
+    <dimen name="big_text">16sp</dimen>
+    <dimen name="large_text">24sp</dimen>
     <dimen name="today_item_big">36sp</dimen>
     <dimen name="today_item_really_big">72sp</dimen>
+
+    <dimen name="detail_item_big">22sp</dimen>
+    <dimen name="detail_item_really_big">48sp</dimen>
+    <dimen name="detail_item_huge">96sp</dimen>
 
 </resources>
