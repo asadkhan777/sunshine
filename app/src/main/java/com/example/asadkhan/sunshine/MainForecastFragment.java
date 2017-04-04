@@ -180,11 +180,11 @@ public class MainForecastFragment extends Fragment
 
     private void updateWeather(){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String location_id = sharedPref.getString(
+        String location_query = sharedPref.getString(
                 getString(R.string.pref_location_key),
                 getString(R.string.pref_location_default));
         Intent sunshineServiceIntent = new Intent(getActivity(), SunshineService.class);
-        sunshineServiceIntent.putExtra(LOCATION_QUERY_EXTRA, location_id);
+        sunshineServiceIntent.putExtra(LOCATION_QUERY_EXTRA, location_query);
         getActivity().startService(sunshineServiceIntent);
     }
 
