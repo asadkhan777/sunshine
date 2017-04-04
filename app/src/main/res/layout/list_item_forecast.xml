@@ -26,7 +26,8 @@
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="7"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:paddingStart="@dimen/activity_horizontal_margin">
 
         <TextView
             android:id="@+id/list_item_date_textview"

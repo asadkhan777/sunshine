@@ -1,5 +1,6 @@
 package com.example.asadkhan.sunshine;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.asadkhan.sunshine.data.WeatherContract;
+import com.example.asadkhan.sunshine.service.SunshineService;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -26,7 +28,6 @@ import com.example.asadkhan.sunshine.data.WeatherContract;
 public class MainForecastFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private static final int FORECAST_LOADER = 0;
 
     private ForecastAdapter mForecastAdapter;
 
@@ -37,6 +38,10 @@ public class MainForecastFragment extends Fragment
     private int mPosition = ListView.INVALID_POSITION;
 
     private final String SELECTED_KEY = "selected_position";
+
+    public static final String LOCATION_QUERY_EXTRA = "lqe";
+
+    private static final int FORECAST_LOADER = 0;
 
     private static final String[] FORECAST_COLUMNS = {
             // In this case the id needs to be fully qualified with a table name, since
@@ -174,22 +179,26 @@ public class MainForecastFragment extends Fragment
     }
 
     private void updateWeather(){
-        FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
-        //
-        // Voodoo magic to get location string value
-        //
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String location_id = sharedPref.getString(
+        String location_query = sharedPref.getString(
                 getString(R.string.pref_location_key),
                 getString(R.string.pref_location_default));
-
-        // https://classroom.udacity.com/courses/ud853/lessons/3681658545/concepts/36079896630923#
-
-        // // Debug
-        // Log.w(LOG_TAG, location_id);
-
-        weatherTask.execute(location_id);
+        Intent sunshineServiceIntent = new Intent(getActivity(), SunshineService.class);
+        sunshineServiceIntent.putExtra(LOCATION_QUERY_EXTRA, location_query);
+        getActivity().startService(sunshineServiceIntent);
     }
+
+    //    private void refreshWeather(){
+    //        FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
+    //        //
+    //        // Voodoo magic to get location string value
+    //        //
+    //        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+    //        String location_id = sharedPref.getString(
+    //                getString(R.string.pref_location_key),
+    //                getString(R.string.pref_location_default));
+    //        weatherTask.execute(location_id);
+    //    }
 
     /*
     *       LoaderAdapter.LoaderCallbacks interface methods' implementations
