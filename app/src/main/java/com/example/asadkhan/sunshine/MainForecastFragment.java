@@ -1,15 +1,14 @@
 package com.example.asadkhan.sunshine;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,9 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.asadkhan.sunshine.data.WeatherContract;
-import com.example.asadkhan.sunshine.service.SunshineService;
+import com.example.asadkhan.sunshine.sync.SunshineSyncAdapter;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -83,7 +83,6 @@ public class MainForecastFragment extends Fragment
         super.onCreate(savedInstanceState);
         // Add this line in order for this fragment to handle menu events.
         setHasOptionsMenu(true);
-//        updateWeather();
     }
 
     @Override
@@ -96,9 +95,14 @@ public class MainForecastFragment extends Fragment
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
-        if (id == R.id.action_refresh) {
-            updateWeather();
+
+//        if (id == R.id.action_refresh) { updateWeatherNow();  return true; }
+
+        if (id == R.id.action_map){
+            // Do something
+            openPreferredLocationInMap();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -110,7 +114,7 @@ public class MainForecastFragment extends Fragment
         // When no item is selected, mPosition will be set to Listview.INVALID_POSITION,
         // so check for that before storing.
         if (mPosition != ListView.INVALID_POSITION) {
-                outState.putInt(SELECTED_KEY, mPosition);
+                    outState.putInt(SELECTED_KEY, mPosition);
                 }
             super.onSaveInstanceState(outState);
         }
@@ -157,12 +161,29 @@ public class MainForecastFragment extends Fragment
             // swap out in onLoadFinished.
             mPosition = savedInstanceState.getInt(SELECTED_KEY);
         }
+        // Get data for init screen values
 
         return rootView;
     }
 
+
+    public void onActivityCreated(Bundle savedInstanceState){
+        // Initiate the Cursor Loader when Activity is up
+        getLoaderManager().initLoader(FORECAST_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
+        // Log.e(LOG_TAG, "Calling UpdateWeather Now in Fragment");
+        // updateWeatherNow();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshViews();
+    }
+
     public void setAdapterTwoPaneSetting(boolean TwoPane){
         mTwoPaneMode = TwoPane;
+        Log.e(LOG_TAG, "Currently 2Pane mode is : " + mTwoPaneMode);
         if ( mForecastAdapter != null ) {
             mForecastAdapter.setUseTodayLayout(TwoPane);
         }
@@ -173,19 +194,41 @@ public class MainForecastFragment extends Fragment
         getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
     }
 
-    public void onActivityCreated(Bundle savedInstanceState){
-        getLoaderManager().initLoader(FORECAST_LOADER, null, this);
-        super.onActivityCreated(savedInstanceState);
+    void updateWeatherNow(){
+//        Log.e(LOG_TAG, "\nUpdating weather now!!");
+//        Intent weatherIntent = new Intent(getActivity(), SunshineService.class);
+//        weatherIntent.putExtra(
+//                SunshineService.LOCATION_QUERY_EXTRA,
+//                Utility.getPreferredLocation(getActivity()));
+//        getActivity().startService(weatherIntent);
+//        mForecastAdapter.notifyDataSetChanged();
+        SunshineSyncAdapter.syncImmediately(getActivity());
     }
 
     private void updateWeather(){
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String location_query = sharedPref.getString(
-                getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default));
-        Intent sunshineServiceIntent = new Intent(getActivity(), SunshineService.class);
-        sunshineServiceIntent.putExtra(LOCATION_QUERY_EXTRA, location_query);
-        getActivity().startService(sunshineServiceIntent);
+        SunshineSyncAdapter.syncImmediately(getActivity());
+        // Background actions to retrieve the weather API data
+
+//        Intent sunshineAlarmIntent = new Intent(getActivity(), SunshineService.class);
+//        sunshineAlarmIntent.putExtra(
+//                SunshineService.LOCATION_QUERY_EXTRA,
+//                Utility.getPreferredLocation(getActivity()));
+//
+//        PendingIntent sunshinePendingIntent =
+//                PendingIntent.getBroadcast(
+//                        getActivity(),
+//                        0,
+//                        sunshineAlarmIntent,
+//                        PendingIntent.FLAG_ONE_SHOT);
+//
+//        AlarmManager alarmManager =
+//                (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+//
+//        alarmManager.setInexactRepeating(
+//                AlarmManager.ELAPSED_REALTIME_WAKEUP,  // Type
+//                SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_FIFTEEN_MINUTES, // Start
+//                2 * 1000,  // Interval - 5 Seconds
+//                sunshinePendingIntent); // Pending Intent
     }
 
     //    private void refreshWeather(){
@@ -199,6 +242,56 @@ public class MainForecastFragment extends Fragment
     //                getString(R.string.pref_location_default));
     //        weatherTask.execute(location_id);
     //    }
+
+    /*
+    *   Inform ListView Elements about updated data
+    * */
+    public void refreshViews(){
+        if ( mForecastAdapter != null ) {
+            mForecastAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void openPreferredLocationInMap() {
+
+        if ( mForecastAdapter == null ) { Log.e(LOG_TAG, "mForecastAdapter is null! Pls chk"); return;}
+        if ( mForecastAdapter.getCursor() == null ) { Log.e(LOG_TAG, "Cursor is null! Pls chk"); return;}
+
+        Cursor myCursor = mForecastAdapter.getCursor();
+
+        myCursor.moveToPosition(0);
+
+        String posLat = myCursor.getString(COL_COORD_LAT);
+        String posLong = myCursor.getString(COL_COORD_LONG);
+
+//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+//        String location_id = sharedPref.getString(
+//                getString(R.string.pref_location_key),
+//                getString(R.string.pref_location_default));
+//        final String QUERY_PARAM = "q";
+//        final String ZOOM_PARAM = "z";
+//        Uri geoloc = Uri.parse("geo:0,0?").buildUpon()
+//                .appendQueryParameter(QUERY_PARAM, location_id)
+//                .appendQueryParameter(ZOOM_PARAM, "20")
+//                .build();
+
+        Uri geoloc = Uri.parse("geo:" + posLat + "," + posLong);
+        Toast.makeText(
+                getActivity(), "Clicked on [View Location] for " + geoloc.toString(),
+                Toast.LENGTH_SHORT).show();
+        Log.e(LOG_TAG, "\nGeoLoc URI : \n" + geoloc);
+
+        Intent intent_map = new Intent(Intent.ACTION_VIEW);
+        intent_map.setData(geoloc);
+        if (intent_map.resolveActivity(getActivity().getPackageManager()) != null) {
+            try { startActivity(intent_map); }
+
+            catch (Exception e)
+            { Log.e(LOG_TAG, e.getMessage() +  "Couldn't call > " + geoloc); }
+
+        }
+        else { Log.e(LOG_TAG, "No Map app appears to be available > " + geoloc ); }
+    }
 
     /*
     *       LoaderAdapter.LoaderCallbacks interface methods' implementations
@@ -235,6 +328,8 @@ public class MainForecastFragment extends Fragment
             // to, do so now.
             mListView.smoothScrollToPosition(mPosition);
         }
+        mForecastAdapter.notifyDataSetChanged();
+        Log.e(LOG_TAG, "Cursor Loading is finished");
     }
 
     @Override
@@ -251,6 +346,6 @@ public class MainForecastFragment extends Fragment
         /**
          * DetailFragmentCallback for when an item has been selected.
          */
-        public void onItemSelected(Uri dateUri);
+        void onItemSelected(Uri dateUri);
     }
 }

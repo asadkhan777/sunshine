@@ -1,15 +1,14 @@
 package com.example.asadkhan.sunshine;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.asadkhan.sunshine.sync.SunshineSyncAdapter;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -53,12 +52,11 @@ public class MainForecastActivity
             // fragment transaction.
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.weather_detail_container,
-                                new ForecastDetailFragment(),
-                                DETAILFRAGMENT_TAG)
-                        .commit();
+                    .replace(R.id.weather_detail_container,
+                            new ForecastDetailFragment(),
+                            DETAILFRAGMENT_TAG)
+                    .commit();
             }
-
             // // Set custom actionbar elevation
             //ActionBar actionBar = getSupportActionBar();
             // if ( actionBar != null){
@@ -73,12 +71,14 @@ public class MainForecastActivity
                         .findFragmentById(R.id.fragment_forecast);
 
         if (null != mainForecastFragment){
-                mainForecastFragment.setAdapterTwoPaneSetting(mTwoPane);
+            mainForecastFragment.setAdapterTwoPaneSetting(mTwoPane);
         }
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        SunshineSyncAdapter.initializeSyncAdapter(this);
         Log.e(LOG_TAG, "Step 1 : OnCreate method here!");
     }
 
@@ -99,47 +99,23 @@ public class MainForecastActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
+             updateWeatherNow();
             return true;
         }
 
-        if (id == R.id.action_map){
-            // Do something
-            // Toast.makeText(this, "Clicked on [View Location]", Toast.LENGTH_SHORT).show();
-            openPreferredLocationInMap();
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void openPreferredLocationInMap() {
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String location_id = sharedPref.getString(
-                getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default));
-        final String QUERY_PARAM = "q";
-        final String ZOOM_PARAM = "z";
-
-        Uri geoloc = Uri.parse("geo:0,0?").buildUpon()
-                .appendQueryParameter(QUERY_PARAM, location_id)
-                .appendQueryParameter(ZOOM_PARAM, "20")
-                .build();
-        Log.e(LOG_TAG, "\nGeoLoc URI : \n" + geoloc);
-
-        Intent intent_map = new Intent(Intent.ACTION_VIEW);
-        intent_map.setData(geoloc);
-        if (intent_map.resolveActivity(getPackageManager()) != null) {
-            try {
-                startActivity(intent_map);
-            } catch (Exception e) {
-                String error = "Couldn't call > " + location_id ;
-                Log.e(LOG_TAG, e.getMessage() + error);
-            }
-        } else {
-            String error = "No map app appears to be available > " + location_id ;
-            Log.e(LOG_TAG, error);
-        }
+    void updateWeatherNow(){
+//        Log.e(LOG_TAG, "\nUpdating weather now in!!");
+//        Intent weatherIntent = new Intent(this, SunshineService.class);
+//        weatherIntent.putExtra(
+//                SunshineService.LOCATION_QUERY_EXTRA,
+//                Utility.getPreferredLocation(this));
+//        this.startService(weatherIntent);
+        SunshineSyncAdapter.syncImmediately(this);
     }
 
     /**
@@ -181,27 +157,7 @@ public class MainForecastActivity
     public void onResume(){
         super.onResume();
         Log.e(LOG_TAG, "Step 4/X : OnResume method here!");
-        String loco = Utility.getPreferredLocation(this);
-        if ( loco != null && !loco.equals(mLocation) ) {
-
-            // Check Main fragment
-            MainForecastFragment mff =
-                    (MainForecastFragment) getSupportFragmentManager()
-                                    .findFragmentById(R.id.fragment_forecast);
-            if (null != mff){
-                mff.onLocationChanged();
-            }
-
-            // Check Detail fragment
-            ForecastDetailFragment fdf =
-                    (ForecastDetailFragment) getSupportFragmentManager()
-                                    .findFragmentByTag(DETAILFRAGMENT_TAG);
-            if (fdf != null){
-                fdf.onLocationChanged(loco);
-            }
-
-            mLocation = loco;
-        }
+        checkLocationStatus();
     }
 
     @Override
@@ -221,6 +177,32 @@ public class MainForecastActivity
         Log.e(LOG_TAG, "Step 6/Z : OnDestroy method here!");
     }
 
+    void checkLocationStatus(){
+
+        String loco = Utility.getPreferredLocation(this);
+        // Reset & Reload if location has changed
+        if ( loco != null && !loco.equals(mLocation) ) {
+
+            // Check Main fragment
+            MainForecastFragment mff =
+                    (MainForecastFragment) getSupportFragmentManager()
+                            .findFragmentById(R.id.fragment_forecast);
+
+            if (null != mff){
+                mff.onLocationChanged();
+            }
+
+            // Check Detail fragment
+            ForecastDetailFragment fdf =
+                    (ForecastDetailFragment) getSupportFragmentManager()
+                            .findFragmentByTag(DETAILFRAGMENT_TAG);
+            if (fdf != null){
+                fdf.onLocationChanged(loco);
+            }
+
+            mLocation = loco;
+        }
+    }
 
     @Override
     public void onItemSelected(Uri contentUri) {
