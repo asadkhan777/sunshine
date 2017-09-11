@@ -19,6 +19,7 @@ package com.example.asadkhan.sunshine;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +32,18 @@ import android.widget.TextView;
  */
 public class ForecastAdapter extends CursorAdapter {
 
+    private final static String LOG_TAG = ForecastAdapter.class.getSimpleName();
+
     private final int VIEW_TYPE_TODAY = 0;
     private final int VIEW_TYPE_FUTURE_DAY = 1;
 
     private final int VIEW_TYPE_COUNT = 2;
 
     private boolean mUseTodayLayout = true;
+
+    public ForecastAdapter(Context context) {
+        super(context, null, 0);
+    }
 
     public ForecastAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
@@ -127,22 +134,24 @@ public class ForecastAdapter extends CursorAdapter {
         double low = cursor.getDouble(MainForecastFragment.COL_WEATHER_MIN_TEMP);
         viewHolder.lowTempView.setText(Utility.formatTemperature(context, low, isMetric));
 
+        // Log.e(LOG_TAG, "High val : " + high);
+        // Log.e(LOG_TAG, "Low val : " + low);
     }
 
     /**
      * Cache of the children views for a forecast list item.
      */
-    public static class ViewHolder {
+    private static class ViewHolder {
 
         /* Constituent views */
-        public final ImageView iconView;
-        public final TextView dateView;
-        public final TextView descriptionView;
-        public final TextView highTempView;
-        public final TextView lowTempView;
+        private final ImageView iconView;
+        private final TextView dateView;
+        private final TextView descriptionView;
+        private final TextView highTempView;
+        private final TextView lowTempView;
 
         /* Public Constructor */
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             iconView = (ImageView) view.findViewById(R.id.list_item_icon);
             dateView = (TextView) view.findViewById(R.id.list_item_date_textview);
             descriptionView = (TextView) view.findViewById(R.id.list_item_forecast_textview);
@@ -151,7 +160,6 @@ public class ForecastAdapter extends CursorAdapter {
         }
     }
 
-
     /**
      * Prepare the weather high/lows for presentation.
      */
@@ -159,6 +167,7 @@ public class ForecastAdapter extends CursorAdapter {
         boolean isMetric = Utility.isMetric(mContext);
         String highLowStr = Utility.formatTemperature(high, isMetric) +
                 "/" + Utility.formatTemperature(low, isMetric);
+        Log.e("ForecastAdapter", "Inside FHL : " + highLowStr);
         return highLowStr;
     }
 

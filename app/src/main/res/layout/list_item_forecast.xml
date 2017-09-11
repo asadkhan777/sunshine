@@ -7,7 +7,8 @@
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
-    android:background="@drawable/touch_selector" >
+    android:background="@drawable/touch_selector"
+    android:baselineAligned="false">
 
     <FrameLayout
         android:layout_marginStart="@dimen/fab_margin"
@@ -19,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:contentDescription="@string/today"/>
+            android:contentDescription="@string/today" />
     </FrameLayout>
 
     <LinearLayout

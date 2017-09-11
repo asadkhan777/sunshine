@@ -24,6 +24,7 @@ import android.text.format.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Utility {
 
@@ -57,7 +58,7 @@ public class Utility {
         } else {
             temp = temperature;
         }
-        return String.format("%.0f", temp);
+        return String.format("%f", temp);
     }
 
     static String formatDate(long dateInMilliseconds) {
@@ -151,20 +152,27 @@ public class Utility {
     public static String getFormattedMonthDay(Context context, long dateInMillis ) {
         Time time = new Time();
         time.setToNow();
-        SimpleDateFormat dbDateFormat = new SimpleDateFormat(Utility.DATE_FORMAT);
-        SimpleDateFormat monthDayFormat = new SimpleDateFormat("MMMM dd");
-        String monthDayString = monthDayFormat.format(dateInMillis);
-        return monthDayString;
+        // SimpleDateFormat dbDateFormat = new SimpleDateFormat(Utility.DATE_FORMAT);
+        SimpleDateFormat monthDayFormat = new SimpleDateFormat("MMMM dd", Locale.ENGLISH);
+        return monthDayFormat.format(dateInMillis);
     }
 
-    static String formatTemperature(Context context, double temperature, boolean isMetric){
+    public static String formatTemperature(Context context, double temperature, boolean isMetric){
         double temp;
+        // String deg = "\u00B0";
+        String deg = "";
+        // Temporary hack used to alter incoming data
+//        Log.d("TEMP", "API data : " + temperature);
+//        Log.d("TEMP", "Altered data : " + temperature/10);
+        temperature /= 10;
         if ( !isMetric ) {
             temp = 9*temperature/5 + 32;
+            deg += "f";
         } else {
             temp = temperature;
+            deg += "c";
         }
-        return context.getString(R.string.format_temperature, temp);
+        return context.getString(R.string.format_temperature, temp) + deg;
     }
 
     // Slabs : 4 > 11 > 163 > 300

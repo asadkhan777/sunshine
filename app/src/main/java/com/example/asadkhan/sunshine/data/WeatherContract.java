@@ -105,8 +105,10 @@ public class WeatherContract {
 
         // Column with the foreign key into the location table.
         public static final String COLUMN_LOC_KEY = "location_id";
+
         // Date, stored as long in milliseconds since the epoch
         public static final String COLUMN_DATE = "date";
+
         // Weather id as returned by API, to identify the icon to be used
         public static final String COLUMN_WEATHER_ID = "weather_id";
 
@@ -122,7 +124,7 @@ public class WeatherContract {
         // Humidity is stored as a float representing percentage
         public static final String COLUMN_HUMIDITY = "humidity";
 
-        // Humidity is stored as a float representing percentage
+        // Pressure is stored as an int representing something
         public static final String COLUMN_PRESSURE = "pressure";
 
         // Windspeed is stored as a float representing windspeed  mph
