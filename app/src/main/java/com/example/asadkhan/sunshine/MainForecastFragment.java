@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.asadkhan.sunshine.data.WeatherContract;
 import com.example.asadkhan.sunshine.sync.SunshineSyncAdapter;
@@ -270,27 +269,25 @@ public class MainForecastFragment extends Fragment
 //                getString(R.string.pref_location_default));
 //        final String QUERY_PARAM = "q";
 //        final String ZOOM_PARAM = "z";
-//        Uri geoloc = Uri.parse("geo:0,0?").buildUpon()
+//        Uri geoLoc = Uri.parse("geo:0,0?").buildUpon()
 //                .appendQueryParameter(QUERY_PARAM, location_id)
 //                .appendQueryParameter(ZOOM_PARAM, "20")
 //                .build();
 
-        Uri geoloc = Uri.parse("geo:" + posLat + "," + posLong);
-        Toast.makeText(
-                getActivity(), "Clicked on [View Location] for " + geoloc.toString(),
-                Toast.LENGTH_SHORT).show();
-        Log.e(LOG_TAG, "\nGeoLoc URI : \n" + geoloc);
+        Uri geoLoc = Uri.parse("geo:" + posLat + "," + posLong);
+        // Toast.makeText( getActivity(), "Clicked on [View Location] for " + geoLoc.toString(), Toast.LENGTH_SHORT).show();
+        Log.e(LOG_TAG, "\nGeoLoc URI : \n" + geoLoc);
 
         Intent intent_map = new Intent(Intent.ACTION_VIEW);
-        intent_map.setData(geoloc);
+        intent_map.setData(geoLoc);
         if (intent_map.resolveActivity(getActivity().getPackageManager()) != null) {
             try { startActivity(intent_map); }
 
             catch (Exception e)
-            { Log.e(LOG_TAG, e.getMessage() +  "Couldn't call > " + geoloc); }
+            { Log.e(LOG_TAG, e.getMessage() +  "Couldn't call > " + geoLoc); }
 
         }
-        else { Log.e(LOG_TAG, "No Map app appears to be available > " + geoloc ); }
+        else { Log.e(LOG_TAG, "No Map app appears to be available > " + geoLoc ); }
     }
 
     /*
