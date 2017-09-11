@@ -2,7 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.asadkhan.sunshine">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.GET_ACCOUNTS" />
+    <!-- Permissions required by the sync adapter -->
+    <uses-permission
+        android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+
 
     <application
         android:allowBackup="true"
@@ -17,7 +28,6 @@
             android:theme="@style/ForecastTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -42,13 +52,41 @@
         </activity>
 
         <provider
-            android:authorities="com.example.asadkhan.sunshine"
-            android:name="com.example.asadkhan.sunshine.data.WeatherProvider"
-            android:enabled="true"
-            android:exported="true"/>
+            android:authorities="@string/content_authority"
+            android:name=".data.WeatherProvider"
+            android:exported="false"
+            android:syncable="true"
+            android:enabled="true" />
 
+        <!--<service-->
+            <!--android:name=".service.SunshineService"-->
+            <!--android:enabled="true" />-->
+
+        <!-- SyncAdapter's dummy authentication service -->
+        <service android:name=".sync.SunshineAuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <!-- The SyncAdapter service -->
         <service
-            android:name=".service.SunshineService"
+            android:name=".sync.SunshineSyncService"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
+
+        <receiver
+            android:name=".service.SunshineService$AlarmReceiver"
             android:enabled="true" />
 
         <!--
@@ -61,3 +99,6 @@
     </application>
 
 </manifest>
+
+    <!--http://cts-staging2.aasaanjobs.com/bulk-actions/application/?page=1&sort=-modified&filters={%22ids%22:[%229b386f77-c6c0-4c78-8459-0024f375ac70%22,%22f88f86dc-b6dc-489f-af72-fedebda70069%22,%22be810fa5-240d-4b1c-9024-c0b4fabd6cc6%22,%22ac77cb90-8c28-46b5-bdb5-8067eb6aaef8%22,%225775cab7-2a9b-4d4c-95e4-806e80ea2fd6%22,%226ce7993d-7707-4af3-b17d-e2ddd7b00014%22],%22filters_loaded%22:true,%22bulk_status%22:%22UP%22}&adv_search={%22should%22:null,%22must%22:null}&saved_filters=default-->
+

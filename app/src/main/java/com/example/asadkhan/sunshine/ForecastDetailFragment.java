@@ -43,7 +43,7 @@ public class ForecastDetailFragment extends Fragment
     private String mForecastStr;
     private Uri mUri;
 
-    private static final int DETAIL_LOADER = 0;
+    private static final int DETAIL_LOADER = 1;
 
     private static final String[] DETAIL_COLUMNS = {
             WeatherEntry.TABLE_NAME + "." + WeatherEntry._ID,
@@ -75,6 +75,8 @@ public class ForecastDetailFragment extends Fragment
     public static final int COL_WEATHER_DEGREES = 8;
     public static final int COL_WEATHER_CONDITION_ID = 9;
 
+    private View rootView;
+
     private ImageView mIconView;
     private TextView mFriendlyDateView;
     private TextView mDateView;
@@ -103,7 +105,8 @@ public class ForecastDetailFragment extends Fragment
         }
         // Add some code
 
-        View rootView = inflater.inflate(R.layout.detail_fragment, container, false);
+        rootView = inflater.inflate(R.layout.detail_fragment, container, false);
+
         mIconView = (ImageView) rootView.findViewById(R.id.detail_icon);
         mDateView = (TextView) rootView.findViewById(R.id.detail_date_textview);
         mFriendlyDateView = (TextView) rootView.findViewById(R.id.detail_day_textview);
@@ -116,6 +119,16 @@ public class ForecastDetailFragment extends Fragment
         // myView = (MyView) rootView.findViewById(R.id.canvas_view);
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e(LOG_TAG, "Inside FDF onResume");
+        getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+        if ( rootView != null ) {
+            rootView.invalidate();
+        }
     }
 
     @Override
@@ -161,6 +174,11 @@ public class ForecastDetailFragment extends Fragment
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
+
+
+    /*
+    *       LoaderAdapter.LoaderCallbacks interface methods' implementations
+    * */
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -231,6 +249,7 @@ public class ForecastDetailFragment extends Fragment
             mPressureView.setText(getActivity().getString(R.string.format_pressure, pressure));
 
             // myView.setX(100);
+
             // We still need this for the share intent
             mForecastStr = String.format("%s - %s - %s/%s", dateText, description, high, low);
 

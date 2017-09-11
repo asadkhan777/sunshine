@@ -14,10 +14,10 @@
     <dimen name="big_text">16sp</dimen>
     <dimen name="large_text">24sp</dimen>
     <dimen name="today_item_big">36sp</dimen>
-    <dimen name="today_item_really_big">72sp</dimen>
+    <dimen name="today_item_really_big">52sp</dimen>
 
     <dimen name="detail_item_big">22sp</dimen>
     <dimen name="detail_item_really_big">48sp</dimen>
-    <dimen name="detail_item_huge">96sp</dimen>
+    <dimen name="detail_item_huge">68sp</dimen>
 
 </resources>

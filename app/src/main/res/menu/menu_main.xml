@@ -8,9 +8,9 @@
         android:orderInCategory="100"
         app:showAsAction="never" />
 
-    <item android:id="@+id/action_map"
-        android:title="@string/action_map_label"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
+    <!--<item android:id="@+id/action_map"-->
+        <!--android:title="@string/action_map_label"-->
+        <!--android:orderInCategory="100"-->
+        <!--app:showAsAction="never" />-->
 
 </menu>
